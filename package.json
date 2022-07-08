@@ -1,0 +1,15 @@
+{
+  "name": "pag-asa_management_system",
+  "version": "1.0.0",
+  "description": "Management system of pag-asa pawnshop",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build-css": "npx tailwindcss -i ./static/css/tailwind.css -o ./static/tailwind.output.css --watch"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "tailwindcss": "^3.1.4"
+  }
+}
