@@ -37,14 +37,22 @@
                   Login
                 </h1>
                 {% if form.errors %}
-                  {{form.errors}}
+                <div class="text-red-600 dark:text-red-600">
+                  {{ form.non_field_errors }}
+                </div>
                 {%endif%}
-                <label class="block text-sm">
+                <label class="block mt-2 text-sm">
                   <span class="text-gray-700 dark:text-gray-400">Username</span>
+                  <div class="text-red-600 dark:text-red-600">
+                    {{form.username.errors}}
+                  </div>
                   {{form.username}}
                 </label>
                 <label class="block mt-4 text-sm">
                   <span class="text-gray-700 dark:text-gray-400">Password</span>
+                  <div class="text-red-600 dark:text-red-600">
+                    {{form.password.errors}}
+                  </div>
                   {{form.password}}
                 </label>
 

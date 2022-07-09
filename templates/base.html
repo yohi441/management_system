@@ -14,6 +14,8 @@
       src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"
       defer
     ></script>
+    <script defer src="https://unpkg.com/htmx.org@1.7.0" integrity="sha384-EzBXYPt0/T6gxNp0nuPtLkmRpmDBbjg6WmCUZRLXBBwYYmwAUxzlSGej0ARHX0Bo" crossorigin="anonymous"></script>
+
     <script src="{% static 'js/init-alpine.js' %}"></script>
   </head>
   <body>
@@ -28,7 +30,7 @@
         <div class="py-4 text-gray-500 dark:text-gray-400">
           <a
             class="ml-6 text-lg font-bold text-gray-700 dark:text-gray-200"
-            href="#"
+            href="{% url 'dashboard' %}"
           >
             Pag-Asa Pawnshop
           </a>
@@ -45,6 +47,7 @@
               <a
                 class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
                 href="{% url 'dashboard' %}"
+                hx-boost='true'
               >
                 <svg
                   class="w-5 h-5"
@@ -68,7 +71,11 @@
             <li class="relative px-6 py-3">
               <a
                 class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                href="#"
+                hx-trigger="click"
+                hx-get="{% url 'all_client_list' %}"
+                hx-swap="outerHTML"
+                hx-target="#content"
+                href=""
               >
                 <svg
                   class="w-5 h-5"
@@ -90,6 +97,10 @@
             <li class="relative px-6 py-3">
               <a
                 class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
+                hx-trigger="click"
+                hx-get="{% url 'all_item_list' %}"
+                hx-swap="outerHTML"
+                hx-target="#content"
                 href=""
               >
                 <svg
