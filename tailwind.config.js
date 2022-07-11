@@ -6,7 +6,11 @@ module.exports = {
     "./management_system/forms.py"
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        pagblue: '#20317f'
+      }
+    },
   },
   plugins: [],
 }

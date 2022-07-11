@@ -2,14 +2,16 @@
 
 
 {% block content %}
-    <div id="content">
+<div>
+    
+    <div id="content" class="htmx-list">
         <h2 class="mt-6 mb-4 text-2xl font-semibold text-gray-600 dark:text-gray-300">Dashboard</h2>
         {% include 'components/cards.html' %}
         {% include 'components/cta_buttons.html' %}
         {% include 'components/tables.html' %}
-        {% include 'components/modal_form.html' %}
         
         
     </div>
+</div>
    
 {% endblock %}

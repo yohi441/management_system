@@ -1,14 +1,18 @@
+{% load mathfilters %}
+
 <div id="content" class="mt-6">
   <h4 class="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300">
     List Of All Items
   </h4>
   <div class="mb-6">
-    <button
-      class="px-5 py-3 font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
-      @click="openModalList"
-    >
-      Add Item Form
-    </button>
+    <a href="{% url 'item_form' %}" hx-boost="true">
+      <button
+        class="px-5 py-3 font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
+        @click="openModalList"
+      >
+        Add Item Form
+      </button>
+    </a>
   </div>
   <div class="w-full overflow-hidden rounded-lg shadow-xs">
     <div class="w-full overflow-x-auto">
@@ -90,13 +94,30 @@
     <div
       class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800"
     >
-      <span class="flex items-center col-span-3">Showing 21-30 of 100</span>
-      <span class="col-span-2"></span>
-      <!-- Pagination -->
-      <span class="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
-        <nav aria-label="Table navigation">
-          <ul class="inline-flex items-center">
+    <span class="flex items-center col-span-3">
+      Showing {% if page_obj.number > 1%}{{page_obj.number|sub:1}}{% endif %}1-{% if page_obj.number == page_obj.paginator.num_pages%}{{page_obj.paginator.count}}{%else%}{{page_obj.number|mul:10}}{%endif%} of {{page_obj.paginator.count}}
+    </span>
+    <span class="col-span-2"></span>
+    <!-- Pagination -->
+    <span class="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
+      <nav aria-label="Table navigation">
+        <ul class="inline-flex items-center">
+            <a href="?page=1" hx-boost="true">
             <li>
+              <button
+              class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple"
+              aria-label="Previous"
+              >
+              First
+              </button>
+            </li>
+          </a>
+          {% if page_obj.has_previous %}
+          <li>
+            <a
+              hx-boost="true"
+              href="?page={{ page_obj.previous_page_number }}"
+            >
               <button
                 class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple"
                 aria-label="Previous"
@@ -113,53 +134,37 @@
                   ></path>
                 </svg>
               </button>
-            </li>
-            <li>
-              <button
-                class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple"
-              >
-                1
-              </button>
-            </li>
-            <li>
-              <button
-                class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple"
-              >
-                2
-              </button>
-            </li>
-            <li>
+            </a>
+          </li>
+          {% endif %} 
+          {% for num in page_obj.paginator.page_range %} 
+          {% if page_obj.number == num %}
+          <li>
+            <a href="?page={{ num }}">
               <button
                 class="px-3 py-1 text-white transition-colors duration-150 bg-purple-600 border border-r-0 border-purple-600 rounded-md focus:outline-none focus:shadow-outline-purple"
               >
-                3
+                {{ num }}
               </button>
-            </li>
-            <li>
+            </a>
+          </li>
+
+          {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+          <li>
+            <a href="?page={{ num }}" hx-boost="true">
               <button
                 class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple"
               >
-                4
+                {{ num }}
               </button>
-            </li>
-            <li>
-              <span class="px-3 py-1">...</span>
-            </li>
-            <li>
-              <button
-                class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple"
-              >
-                8
-              </button>
-            </li>
-            <li>
-              <button
-                class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple"
-              >
-                9
-              </button>
-            </li>
-            <li>
+            </a>
+          </li>
+
+          {% endif %} 
+          {% endfor %} 
+          {% if page_obj.has_next %}
+          <li>
+            <a hx-boost="true" href="?page={{ page_obj.next_page_number }}">
               <button
                 class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple"
                 aria-label="Next"
@@ -176,11 +181,24 @@
                   ></path>
                 </svg>
               </button>
-            </li>
-          </ul>
-        </nav>
-      </span>
+            </a>
+          </li>
+          {% endif %}
+        <li>
+          <a href="?page={{page_obj.paginator.num_pages}}" hx-boost="true">
+            <button
+            class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple"
+            aria-label="Previous"
+            >
+            Last
+            </button>
+          </a>
+        </li>
+        
+        </ul>
+      </nav>
+    </span>
     </div>
   </div>
-  {% include 'components/modal_form.html' %}
+
 </div>

@@ -1,14 +1,20 @@
-<div class="mb-6">
-  <button
-    class="px-5 py-3 font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
-    @click="openModalClient"
+<div class="mb-6 space-x-3">
+  <a href="{% url 'client_form' %}"
+     hx-boost="true"
   >
-    Add Client Form
-  </button>
+    <button
+      class="px-5 py-3 font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
+    >
+      Add Client Form
+    </button>
+  </a>
+  <a href="{% url 'item_form' %}"
+     hx-boost="true"
+  >
   <button
     class="px-5 py-3 font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
-    @click="openModalList"
-    >
+  >
     Add Item Form
   </button>
+  </a>
 </div>

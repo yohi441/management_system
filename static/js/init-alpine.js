@@ -62,5 +62,6 @@ function data() {
       this.isClientModalOpen = false
       this.isListModalOpen = false
     },
-  }
+   
+}
 }
