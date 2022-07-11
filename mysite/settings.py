@@ -1,4 +1,4 @@
-
+from decouple import config, Csv
 
 from pathlib import Path
 import os
@@ -10,9 +10,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure--ss*8(rgf9khxz!+$o@ub4u@%(xen2q)hak=1!=npy=)=6-1gq'
 
 
-DEBUG = True
+DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
 
 
@@ -113,4 +113,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 LOGIN_REDIRECT_URL = '/dashboard/'
+
+LOGIN_URL = '/'
 

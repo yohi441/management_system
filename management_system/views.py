@@ -9,7 +9,7 @@ from django.views.generic import View, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-class LogoutView(View, LoginRequiredMixin):
+class LogoutView(LoginRequiredMixin, View):
     def get(self, request):
         logout(request)
         return redirect(reverse('login'))
@@ -48,7 +48,7 @@ class LoginView(View):
 login_view = LoginView.as_view()
 
 
-class DashboardView(View, LoginRequiredMixin):
+class DashboardView(LoginRequiredMixin, View):
 
     def get(self, request):
         clients = Client.objects.all().order_by('-created')[:10]
@@ -65,7 +65,7 @@ class DashboardView(View, LoginRequiredMixin):
 dashboard_view = DashboardView.as_view()
 
 
-class ClientListView(ListView, LoginRequiredMixin):
+class ClientListView(LoginRequiredMixin, ListView):
     model = Client
     template_name = "client_list_full.html"
     paginate_by = 10
@@ -76,7 +76,7 @@ class ClientListView(ListView, LoginRequiredMixin):
 client_list_view = ClientListView.as_view()
 
 
-class ItemListView(ListView, LoginRequiredMixin):
+class ItemListView(LoginRequiredMixin, ListView):
     model = Item
     template_name = "item_list_full.html"
     paginate_by = 10
@@ -88,7 +88,7 @@ class ItemListView(ListView, LoginRequiredMixin):
 item_list_view = ItemListView.as_view()
 
 
-class ItemFormView(View, LoginRequiredMixin):
+class ItemFormView(LoginRequiredMixin, View):
 
     def get(self, request):
         form = ItemForm()
@@ -110,7 +110,7 @@ class ItemFormView(View, LoginRequiredMixin):
 item_form_view = ItemFormView.as_view()
 
 
-class ClientFormView(View, LoginRequiredMixin):
+class ClientFormView(LoginRequiredMixin, View):
 
     def get(self, request):
         form = ClientForm()
