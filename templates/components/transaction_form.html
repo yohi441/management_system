@@ -7,7 +7,7 @@
   >
   <form action=""></form>
     <form
-      action="{% url 'client_form' %}"
+      action="{% url 'transaction_form' %}"
       hx-boost="true"
       method="POST"
       class="text-gray-700 dark:text-gray-300"    
@@ -16,7 +16,7 @@
       <div class="mt-4 mb-6">
         <!-- Modal title -->
         <p class="mb-2 text-lg font-semibold text-gray-700 dark:text-gray-300">
-          Add Client
+          Add Transaction
         </p>
 
         {% csrf_token %}

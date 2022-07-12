@@ -2,15 +2,15 @@
 
 <div id="content" class="mt-6">
   <h4 class="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300">
-    List Of All Items
+    List Of All Transactions
   </h4>
   <div class="mb-6">
-    <a href="{% url 'item_form' %}" hx-boost="true" hx-indicator="#my-indicator">
+    <a href="{% url 'transaction_form' %}" hx-boost="true" hx-indicator="#my-indicator">
       <button
         class="px-5 py-3 font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue"
         @click="openModalList"
       >
-        Add Item Form
+        Add Transaction Form
       </button>
     </a>
   </div>
@@ -22,31 +22,32 @@
             class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800"
           >
             <th class="px-4 py-3">Item</th>
-            <th class="px-4 py-3">Serial Number</th>
-            <th class="px-4 py-3">Amount</th>
+            <th class="px-4 py-3">Interes Rate</th>
+            <th class="px-4 py-3"> Total Amount </th>
+
             <th class="px-4 py-3">Date</th>
           </tr>
         </thead>
         <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
-          {% for item in items %}
+          {% for transaction in transactions %}
           <tr class="text-gray-700 dark:text-gray-400">
             <td class="px-4 py-3">
               <div class="flex items-center text-sm">
                 <div>
-                  <a href="{% url 'item_detail' item.pk %}" hx-boost="true" hx-indicator="#my-indicator">
-                    <p class="font-semibold">{{item.item|title}}</p>
+                  <a href="{% url 'transaction_detail' transaction.pk %}" hx-boost="true" hx-indicator="#my-indicator">
+                    <p class="font-semibold">Id: {{ transaction.id }} | Client: {{ transaction.client }}</p>
                   </a>
                   <p class="text-xs text-gray-600 dark:text-gray-400">
-                    {{item.client|title}}
+                   sample
                   </p>
                 </div>
               </div>
             </td>
-            <td class="px-4 py-3 text-sm">{{item.serial_number}}</td>
-            <td class="px-4 py-3 text-sm">P {{item.appraise_value}}</td>
-            
-            <td class="px-4 py-3 text-sm">{{item.created}}</td>
-           
+            <td class="px-4 py-3 text-sm">{{transaction.interest_rate}} %</td>
+            <td class="px-4 py-3 text-sm">P {{transaction.total}}</td>
+         
+            <td class="px-4 py-3 text-sm">{{transaction.created}}</td>
+          
           </tr>
           {% endfor %}
         </tbody>

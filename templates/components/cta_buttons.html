@@ -1,20 +1,23 @@
 <div class="mb-6 space-x-3">
   <a href="{% url 'client_form' %}"
      hx-boost="true"
+     hx-indicator="#my-indicator"
   >
     <button
-      class="px-5 py-3 font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
+      class="px-5 py-3 font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue;"
     >
       Add Client Form
     </button>
   </a>
   <a href="{% url 'item_form' %}"
      hx-boost="true"
+     hx-indicator="#my-indicator"
   >
   <button
-    class="px-5 py-3 font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
+    class="px-5 py-3 font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue;"
   >
     Add Item Form
   </button>
   </a>
+
 </div>

@@ -1,16 +1,28 @@
 /** @type {import('tailwindcss').Config} */
+const plugin = require('tailwindcss/plugin')
+
+const defaultTheme = require('tailwindcss/defaultTheme')
+
 module.exports = {
+  darkMode: 'class',
   content: [
     "./templates/**/*.html",
-    "./static/**/*.js",
-    "./management_system/forms.py"
+    "./static/js/**/*.js",
+    "./management_system/forms.py",
+    
   ],
   theme: {
+    
     extend: {
       colors: {
-        pagblue: '#20317f'
-      }
+        pablue: '#20317f'
+      },
+      fontFamily: {
+        'sans': ['Inter', ...defaultTheme.fontFamily.sans],
+      },
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/forms')
+  ],
 }

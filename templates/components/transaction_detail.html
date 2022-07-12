@@ -1,0 +1,59 @@
+{% extends 'base.html' %} {% block content %}
+<div
+  class="min-w-0 p-4 mt-6 space-y-2 bg-white rounded-lg shadow-xs dark:bg-gray-800"
+>
+  <h4 class="mb-4 font-semibold text-gray-600 dark:text-gray-300">
+    Transaction Detail
+  </h4>
+  
+  
+    <p class="text-gray-600 dark:text-gray-400">
+        <a href="{% url 'client_detail' object.client.pk %}" hx-boost="true" hx-indicator="#my-indicator">
+        <span>Client Name:</span> {{object.client|title}}
+    </a>
+    </p>
+  
+    
+        <p class="text-gray-600 dark:text-gray-400">
+            <a href="{% url 'item_detail' object.item.pk %}" hx-boost="true" hx-indicator="#my-indicator">
+            <span>Item Name:</span> {{object.item|title}}
+        </a>
+        </p>
+    
+  <p class="text-gray-600 dark:text-gray-400">
+    <span>Interest Rate:</span> {{object.interest_rate|title}} %
+  </p>
+  <p class="text-gray-600 dark:text-gray-400">
+    <span>Interest Amount:</span> P {{object.interest_amount}} 
+  </p>
+  <p class="text-gray-600 dark:text-gray-400">
+    <span>Total Amount:</span>  P {{object.total}}
+  </p>
+  <p class="text-gray-600 dark:text-gray-400">
+    <span>Date Pawned:</span> {{object.date_pawned|title}}
+  </p>
+  <p class="text-gray-600 dark:text-gray-400">
+    <span>Redeem Date:</span> {{object.redeem_date|title}}
+  </p>
+  <p class="text-gray-600 dark:text-gray-400">
+    <span>Status:</span> {{object.status|title}}
+  </p>
+<a href="{% url 'transaction_update' object.pk %}">
+  <button
+    class="flex items-center justify-between px-4 py-2 mt-6 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue"
+  >
+    <svg
+      fill="currentColor"
+      class="w-4 h-4 mr-2 -ml-1"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 20 20"
+    >
+      <path
+        d="M12.3 3.7l4 4L4 20H0v-4L12.3 3.7zm1.4-1.4L16 0l4 4-2.3 2.3-4-4z"
+      />
+    </svg>
+    <span>Update</span>
+  </button>
+</a>
+</div>
+{% endblock content %}
