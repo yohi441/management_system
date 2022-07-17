@@ -9,13 +9,14 @@ from management_system.forms import LoginForm, ClientForm, ItemForm, Transaction
 from django.views.generic import View, ListView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
-from time import sleep
+from django.db.models import Q
 
 
 
 class ClientDetailView(LoginRequiredMixin, DetailView):
     template_name = 'components/client_detail.html'
     model = Client
+    
 
 client_detail_view = ClientDetailView.as_view()
 
@@ -244,5 +245,28 @@ class TransactionUpdateView(LoginRequiredMixin, View):
         return render(request, 'components/transaction_update.html', {'form': form, 'transaction':transaction})
 
 transaction_update_view = TransactionUpdateView.as_view()
+
+
+class SearchResultsView(LoginRequiredMixin, View):
+
+    def get(self, request):
+        q = request.GET.get('q')
+        clients = Client.objects.filter(
+            Q(first_name__icontains=q) |
+            Q(last_name__icontains=q) |
+            Q(middle_name__icontains=q)
+            )[:10]
+       
+
+        context = {
+            'clients': clients,
+        }
+
+        return render(request, 'components/search_results.html', context)
+
+    def post(self, request):
+        pass
+
+search_results_view = SearchResultsView.as_view()
 
 

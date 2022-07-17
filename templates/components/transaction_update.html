@@ -2,7 +2,7 @@
 
 
 {% block content %}
-<div class="min-w-0 p-4 mt-6 space-y-2 bg-white rounded-lg shadow-xs dark:bg-gray-800">
+<div class="min-w-0 p-4 mx-auto mt-6 space-y-2 bg-white rounded-lg shadow-xs dark:bg-gray-800">
     <h3 class="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300">Update Transaction</h1>
 
     <form action="{% url 'transaction_update' transaction.pk %}" method="POST" hx-boost="true" hx-indicator="#my-indicator">

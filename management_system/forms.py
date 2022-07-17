@@ -11,21 +11,22 @@ class TransactionForm(forms.ModelForm):
     class Meta:
         model = Transaction
         fields = "__all__"
+        widgets = {
+            'status': forms.HiddenInput(),
+        }
+        
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-      
-        for field in self.fields:
-            if field == 'date_pawned' or field == 'redeem_date':
-                self.fields[str(field)].widget = forms.SelectDateWidget(attrs={
-                    'class': 'rounded-md mb-2 block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-blue-400 focus:outline-none focus:ring-0 focus:shadow-outline-blue dark:text-gray-300 dark:focus:shadow-outline-gray form-input',
         
-                })
-            else:
-                self.fields[str(field)].widget.attrs.update({
-                    'class': 'rounded-md mb-2 block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-blue-400 focus:outline-none focus:ring-0 focus:shadow-outline-blue dark:text-gray-300 dark:focus:shadow-outline-gray form-input',
-                    'placeholder': str(field).replace('_', ' ').capitalize(),
-                })
+        for field in self.fields:
+            print(field)
+            self.fields[str(field)].widget.attrs.update({
+                'class': 'rounded-md mb-2 block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-blue-400 focus:outline-none focus:ring-0 focus:shadow-outline-blue dark:text-gray-300 dark:focus:shadow-outline-gray form-input',
+                'placeholder': str(field).replace('_', ' ').capitalize(),
+            })
+        
+         
 
 class ClientForm(forms.ModelForm):
 
