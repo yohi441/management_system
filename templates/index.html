@@ -5,7 +5,12 @@
 <div>
     
     <div id="content" class="htmx-list">
-        <h2 class="mt-6 mb-4 text-2xl font-semibold text-gray-600 dark:text-gray-300">Dashboard</h2>
+        <div class="flex justify-between">
+            <h2 class="mt-6 mb-4 text-2xl font-semibold text-gray-600 dark:text-gray-300">Dashboard</h2>
+            <h2 class="mt-6 mb-4 text-2xl font-semibold text-gray-600 dark:text-gray-300">Hi {{ user.username|title }}</h2>
+            
+        </div>
+        
         {% include 'components/cards.html' %}
         {% include 'components/cta_buttons.html' %}
         {% include 'components/tables.html' %}

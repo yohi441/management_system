@@ -27,6 +27,12 @@ urlpatterns = [
     path('item/update/<int:pk>', views.item_update_view, name="item_update"),
     path('transaction/update/<int:pk>', views.transaction_update_view, name="transaction_update"),
     
+    path('transaction/renew/<int:pk>', views.renew_transaction_view, name="transaction_renew"),
+    path('transaction/paid/<int:pk>', views.paid_transaction_view, name="transaction_paid"),
+    
+    
+    path('transaction/list/5/days/due/date', views.transaction_list_due_date_view, name="all_transaction_list_due_date"),
+    
 ]
 
 

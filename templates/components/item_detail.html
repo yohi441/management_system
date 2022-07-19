@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load mathfilters %}
+{% load l10n %}
 {% block content %}
 <div
   class="min-w-0 p-4 mt-6 space-y-2 bg-white rounded-lg shadow-xs dark:bg-gray-800"
@@ -12,21 +13,25 @@
     <span>Item Name:</span> {{object.item|title}}
   </p>
   <p class="text-gray-600 dark:text-gray-400">
-    <span>Serial Number:</span> {{object.serial_number|title}}
+    <span>Serial Number:</span> {{object.serial_number|unlocalize}}
   </p>
   <p class="text-gray-600 dark:text-gray-400">
     <span>Model:</span> {{object.model|title}}
   </p>
   <p class="text-gray-600 dark:text-gray-400">
-    <span>Appraise Value:</span> {{object.appraise_value|title}}
+    <span>Appraise Value:</span> P {{object.appraise_value}}
   </p>
 
   <p class="text-gray-600 dark:text-gray-400">
-    <span>Item Description:</span> {{object.description|title}}
+    <span>Item Description:</span> {{object.item_description|capfirst}}
   </p>
   <p class="text-gray-600 dark:text-gray-400">
-    <span>Remarks:</span> {{object.remarks|title}}
+    <span>Remarks:</span> {{object.remarks|capfirst}}
   </p>
+  <p class="text-gray-600 dark:text-gray-400">
+    <span>Status:</span> {% if object.status == "A"%}Active{%else%}Inactive{% endif %}
+  </p>
+  {% if objects.status == 'A'%}
   <a href="{% url 'item_update' object.pk %}">
   <button
     class="flex items-center justify-between px-4 py-2 mt-6 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue"
@@ -44,6 +49,7 @@
     <span>Update</span>
   </button>
 </a>
+{% endif %}
 </div>
 <h4 class="mt-6 mb-4 font-semibold text-gray-600 dark:text-gray-300">
    Transaction List Related To This Item
@@ -57,33 +63,33 @@
         >
           <th class="px-4 py-3">Item</th>
           <th class="px-4 py-3">Interest Rate</th>
-          <th class="px-4 py-3"> Total Amount </th>
+          <th class="px-4 py-3">Total Amount </th>
 
           <th class="px-4 py-3">Date</th>
         </tr>
       </thead>
       <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
-        {% for transaction in object.items.all %}
+        
         <tr class="text-gray-700 dark:text-gray-400">
           <td class="px-4 py-3">
             <div class="flex items-center text-sm">
               <div>
-                <a href="{% url 'transaction_detail' transaction.pk %}" hx-boost="true" hx-indicator="#my-indicator">
-                  <p class="font-semibold">Id: {{ transaction.id }} | Client: {{ transaction.client }}</p>
+                <a href="{% url 'transaction_detail' object.items.pk %}" hx-boost="true" hx-indicator="#my-indicator">
+                  <p class="font-semibold">Client: {{ object.items.client.first_name|title }} {{ object.items.client.last_name|title }}</p>
                 </a>
                 <p class="text-xs text-gray-600 dark:text-gray-400">
-                 sample
+                  Transaction Id: {{ object.items.id }}
                 </p>
               </div>
             </div>
           </td>
-          <td class="px-4 py-3 text-sm">{{transaction.interest_rate}} %</td>
-          <td class="px-4 py-3 text-sm">P {{transaction.total}}</td>
+          <td class="px-4 py-3 text-sm">{{object.items.interest_rate}} %</td>
+          <td class="px-4 py-3 text-sm">P {{object.items.total}}</td>
        
-          <td class="px-4 py-3 text-sm">{{transaction.created}}</td>
+          <td class="px-4 py-3 text-sm">{{object.items.created}}</td>
         
         </tr>
-        {% endfor %}
+        
       </tbody>
     </table>
   </div>

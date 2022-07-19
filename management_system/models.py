@@ -1,4 +1,5 @@
 
+from random import choices
 from django.db import models
 import datetime
 
@@ -21,7 +22,7 @@ class Client(models.Model):
 
 
     def __str__(self) -> str:
-        return f"{self.first_name} {self.last_name}".capitalize()
+        return f"Id: {self.id} -- {self.first_name.capitalize()} {self.middle_name.capitalize()} {self.last_name.capitalize()} -- Address: {self.address.capitalize()}"
 
 
 class Category(models.Model):
@@ -37,6 +38,10 @@ class Category(models.Model):
 
 
 class Item(models.Model):
+    CHOICE = [
+        ('A', 'Active'),
+        ('I', 'Inactive')
+    ]
     item = models.CharField(max_length=255)
     serial_number = models.IntegerField()
     model = models.CharField(max_length=255)
@@ -44,6 +49,7 @@ class Item(models.Model):
     item_description = models.CharField(max_length=255, blank=True, null=True)
     category = models.ManyToManyField(
         Category, blank=True, related_name="categories")
+    status=models.CharField(choices=CHOICE, default='A', max_length=2)
     remarks = models.TextField(blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -51,7 +57,7 @@ class Item(models.Model):
     
 
     def __str__(self) -> str:
-        return f"{self.item}-{self.id}".capitalize()
+        return f"Serial Number: {self.serial_number} -- {self.item.capitalize()}"
 
 
 class Transaction(models.Model):
@@ -62,7 +68,7 @@ class Transaction(models.Model):
         ('Renew','Renew'),
     ]
     client = models.ForeignKey(Client, related_name='clients', on_delete=models.CASCADE) 
-    item = models.ForeignKey(Item, related_name='items', on_delete=models.CASCADE)
+    item = models.OneToOneField(Item, related_name='items', on_delete=models.CASCADE)
     interest_rate = models.PositiveIntegerField()
     date_pawned = models.DateField(auto_now_add=True)
     month = models.PositiveIntegerField(default=1)
@@ -70,7 +76,7 @@ class Transaction(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
-
+    @property
     def due_date(self):
         month = datetime.timedelta(self.month*30)
         due_date = self.date_pawned + month

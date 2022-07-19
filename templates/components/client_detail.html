@@ -42,7 +42,7 @@
          <th class="px-4 py-3">Interest Rate</th>
          <th class="px-4 py-3"> Total Amount </th>
 
-         <th class="px-4 py-3">Date</th>
+         <th class="px-4 py-3">Date Pawned</th>
        </tr>
      </thead>
      <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
@@ -52,10 +52,10 @@
            <div class="flex items-center text-sm">
              <div>
                <a href="{% url 'transaction_detail' transaction.pk %}" hx-boost="true" hx-indicator="#my-indicator">
-                 <p class="font-semibold">Id: {{ transaction.id }} | Client: {{ transaction.client }}</p>
+                 <p class="font-semibold">Client: {{ transaction.client.first_name|title }} {{ transaction.client.last_name|title }}</p>
                </a>
                <p class="text-xs text-gray-600 dark:text-gray-400">
-                sample
+                Transaction Id: {{ transaction.id }} 
                </p>
              </div>
            </div>
@@ -63,7 +63,7 @@
          <td class="px-4 py-3 text-sm">{{transaction.interest_rate}} %</td>
          <td class="px-4 py-3 text-sm">P {{transaction.total}}</td>
       
-         <td class="px-4 py-3 text-sm">{{transaction.created}}</td>
+         <td class="px-4 py-3 text-sm">{{transaction.date_pawned}}</td>
        
        </tr>
        {% endfor %}

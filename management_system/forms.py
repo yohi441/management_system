@@ -13,11 +13,13 @@ class TransactionForm(forms.ModelForm):
         fields = "__all__"
         widgets = {
             'status': forms.HiddenInput(),
+            'month': forms.HiddenInput(),
         }
         
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields['item'].queryset = Item.objects.filter(status='A')
         
         for field in self.fields:
             print(field)
@@ -51,9 +53,13 @@ class ItemForm(forms.ModelForm):
     class Meta:
         model = Item
         fields = "__all__"
+        widgets = {
+            'status': forms.HiddenInput(),
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        
 
         for field in self.fields:
             self.fields[field].widget.attrs.update({

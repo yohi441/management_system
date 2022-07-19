@@ -22,7 +22,7 @@
         {% csrf_token %}
         
         {%for field in form %}
-          {% if field.label != 'Status' %}
+          {% if field.label != 'Status' and field.label != 'Month' %}
             {{field.label}}
           {%endif%}
           <div class="text-sm text-red-600">
