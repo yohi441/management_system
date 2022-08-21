@@ -9,8 +9,10 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="{% static 'css/tailwind.output.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/htmx.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/tailwind.output.css' %}" media="all" />
+    <link rel="stylesheet" href="{% static 'css/htmx.css' %}" media="all" />
+    <link rel="stylesheet" href="{% static 'css/print.css'%}" media="print">
+    <script src="{% static 'js/print.min.js' %}"></script>
     <script
       src="{% static 'js/alpinejs.js' %}"
       defer
@@ -34,6 +36,7 @@
     >
       <!-- Desktop sidebar -->
       <aside
+        id="desktop-sidebar"
         class="z-20 flex-shrink-0 hidden w-64 overflow-y-auto bg-white dark:bg-gray-800 md:block"
       >
         <div class="py-4 text-gray-500 dark:text-gray-400">
@@ -156,8 +159,8 @@
       <!-- Mobile sidebar -->
       <!-- Backdrop -->
       {% include 'components/mobile_sidebar.html' %}
-      <div class="flex flex-col flex-1">
-        <header class="z-10 py-4 bg-white shadow-md dark:bg-gray-800">
+      <div id="mobile-backdrop" class="flex flex-col flex-1">
+        <header id="header-hidden" class="z-10 py-4 bg-white shadow-md dark:bg-gray-800">
           <div
             class="container flex items-center justify-between h-full px-6 mx-auto text-purple-600 dark:text-purple-300"
           >
@@ -181,7 +184,7 @@
               </svg>
             </button>
             <!-- Search input -->
-            <div class="flex justify-center flex-1 lg:mr-32">
+            <div id="search-bar" class="flex justify-center flex-1 lg:mr-32">
               
               <div
                 class="relative w-full max-w-xl mr-6 focus-within:text-purple-500"

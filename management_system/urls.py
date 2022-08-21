@@ -36,6 +36,8 @@ urlpatterns = [
     path('transaction/renew/list/', views.transaction_list_renew_view, name="transaction_renew_list"),
     path('transaction/new/list/', views.transaction_list_new_view, name="transaction_new_list"),
 
+    path('transaction/five/days/due', views.five_days_before_due_date, name="five-days-due")
+
     
 ]
 

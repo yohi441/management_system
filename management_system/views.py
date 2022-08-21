@@ -377,3 +377,23 @@ class PaidTransactionView(View):
 paid_transaction_view = PaidTransactionView.as_view()
 
 
+class FiveDaysBeforeDueDate(LoginRequiredMixin ,View):
+
+    def get(self, request):
+        transactions = Transaction.objects.filter(Q(status='Renew')|Q(status='New'))
+
+        e_list = []
+
+        for transaction in transactions:
+            expiration = transaction.due_date
+            date_now = datetime.datetime.now().date()
+            days = (expiration) - date_now
+
+            if days.days <= 5 and days.days >= 0:
+                e_list.append(transaction.id)
+
+        five_days_before_expire = Transaction.objects.filter(pk__in=e_list)    
+            
+        return render(request, 'components/five_days_due_date.html', {'transaction': five_days_before_expire})
+
+five_days_before_due_date = FiveDaysBeforeDueDate.as_view()
