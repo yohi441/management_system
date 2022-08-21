@@ -31,7 +31,11 @@ urlpatterns = [
     path('transaction/paid/<int:pk>', views.paid_transaction_view, name="transaction_paid"),
     
     
-    path('transaction/list/5/days/due/date', views.transaction_list_due_date_view, name="all_transaction_list_due_date"),
+    path('transaction/pending/list/', views.transaction_list_pending_view, name="transaction_pending_list"),
+    path('transaction/paid/list/', views.transaction_list_paid_view, name="transaction_paid_list"),
+    path('transaction/renew/list/', views.transaction_list_renew_view, name="transaction_renew_list"),
+    path('transaction/new/list/', views.transaction_list_new_view, name="transaction_new_list"),
+
     
 ]
 

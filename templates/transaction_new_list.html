@@ -7,7 +7,7 @@
   
 <div id="content" class="mt-6">
   <h4 class="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300">
-    List of Transaction 5 days before due date
+    List of New Transactions
   </h4>
   <div class="mb-6 flex justify-between">
     <a href="{% url 'transaction_form' %}" hx-boost="true" hx-indicator="#my-indicator">
@@ -19,8 +19,38 @@
       </button>
     </a>
     <div>
-      <a href="{% url 'all_transaction_list_due_date' %}" hx-boost="true" hx-indicator="#my-indicator">
-        Less than 5 days due date
+      <a href="{% url 'transaction_new_list' %}" hx-boost="true" hx-indicator="#my-indicator">
+        
+        <button
+        class="px-5 py-3 font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue"
+        >
+          New List
+        </button>
+      </a>
+      <a href="{% url 'transaction_paid_list' %}" hx-boost="true" hx-indicator="#my-indicator">
+        
+        <button
+        class="px-5 py-3 font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue"
+        >
+          Paid List
+        </button>
+      </a>
+      <a href="{% url 'transaction_renew_list' %}" hx-boost="true" hx-indicator="#my-indicator">
+        
+        <button
+        class="px-5 py-3 font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue"
+        >
+          Renew List
+        </button>
+      </a>
+      <a href="{% url 'transaction_pending_list' %}" hx-boost="true" hx-indicator="#my-indicator">
+        
+        <button
+        class="px-5 py-3 font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue"
+        @click="openModalList"
+        >
+          Pending
+        </button>
       </a>
     </div>
   </div>

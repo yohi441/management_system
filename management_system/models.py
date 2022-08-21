@@ -1,5 +1,4 @@
 
-from random import choices
 from django.db import models
 import datetime
 
@@ -92,6 +91,7 @@ class Transaction(models.Model):
     def interest_amount(self):
         interest_rate = float(self.interest_rate) / 100
         return float(self.item.appraise_value) * interest_rate
+  
 
 
     def __str__(self) -> str:

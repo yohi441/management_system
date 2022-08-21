@@ -20,6 +20,7 @@ class TransactionForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['item'].queryset = Item.objects.filter(status='A')
+        self.fields['client'].queryset = Client.objects.filter(status='active')
         
         for field in self.fields:
             print(field)
@@ -38,6 +39,7 @@ class ClientForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        
       
         for field in self.fields:
             self.fields[str(field)].widget.attrs.update({

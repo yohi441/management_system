@@ -1,8 +1,13 @@
+{% extends 'base.html' %}
+
 {% load mathfilters %}
 {% load l10n %}
+{% block content %}
+
+  
 <div id="content" class="mt-6">
   <h4 class="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300">
-    List Of All Transactions
+    List of Renew Transactions
   </h4>
   <div class="mb-6 flex justify-between">
     <a href="{% url 'transaction_form' %}" hx-boost="true" hx-indicator="#my-indicator">
@@ -42,7 +47,6 @@
         
         <button
         class="px-5 py-3 font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue"
-        @click="openModalList"
         >
           Pending
         </button>
@@ -209,3 +213,4 @@
   </div>
 
 </div>
+{% endblock content %}

@@ -1,6 +1,5 @@
-from email import message
+from http.client import HTTPResponse
 from django.shortcuts import redirect, render
-from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from management_system.models import Client, Item, Transaction, Category
 from django.contrib.auth import logout
@@ -15,16 +14,17 @@ import datetime
 
 def pending_check(model):
     t = model.objects.filter(Q(status='Renew')|Q(status='New'))
+    date_now = datetime.datetime.now().date()
     counter = 0
     if t:
         for i in t:
-            if datetime.datetime.now().date() > i.due_date():
+            if date_now > i.due_date:
                 i.status = 'Pending'
                 i.save()
                 counter += 1
-                
-    
+                 
     return counter
+
 
 class ClientDetailView(LoginRequiredMixin, DetailView):
     template_name = 'components/client_detail.html'
@@ -98,7 +98,6 @@ class DashboardView(LoginRequiredMixin, View):
         to_pending = pending_check(Transaction)
 
        
-        print(to_pending)
         context = {
             'clients': clients,
             'count': count,
@@ -152,19 +151,52 @@ class TransactionListView(LoginRequiredMixin, ListView):
 transaction_list_view = TransactionListView.as_view()
 
 
-class TransactionListDueDateView(LoginRequiredMixin, ListView):
+class TransactionListPendingView(LoginRequiredMixin, ListView):
     
 
-    
-    
-    queryset = Transaction.objects.filter(status="Paid")
-    template_name = "transaction_list_due_date.html"
+    queryset = Transaction.objects.filter(status="Pending")
+    template_name = "transaction_pending_list.html"
     paginate_by = 10
     context_object_name = 'transactions'
     ordering = ['-created']
 
 
-transaction_list_due_date_view = TransactionListDueDateView.as_view()
+transaction_list_pending_view = TransactionListPendingView.as_view()
+
+
+class TransactionListPaidView(LoginRequiredMixin, ListView):
+    
+    queryset = Transaction.objects.filter(status="Paid")
+    template_name = "transaction_paid_list.html"
+    paginate_by = 10
+    context_object_name = 'transactions'
+    ordering = ['-created']
+
+
+transaction_list_paid_view = TransactionListPaidView.as_view()
+
+class TransactionListRenewView(LoginRequiredMixin, ListView):
+    
+    queryset = Transaction.objects.filter(status="Renew")
+    template_name = "transaction_renew_list.html"
+    paginate_by = 10
+    context_object_name = 'transactions'
+    ordering = ['-created']
+
+
+transaction_list_renew_view = TransactionListRenewView.as_view()
+
+
+class TransactionListNewView(LoginRequiredMixin, ListView):
+    
+    queryset = Transaction.objects.filter(status="New")
+    template_name = "transaction_new_list.html"
+    paginate_by = 10
+    context_object_name = 'transactions'
+    ordering = ['-created']
+
+
+transaction_list_new_view = TransactionListNewView.as_view()
 
 
 
@@ -321,7 +353,7 @@ class RenewTransactionView(View):
         
         transaction.month += 1
         
-        if datetime.datetime.now().date() > transaction.due_date():
+        if datetime.datetime.now().date() > transaction.due_date:
             transaction.status = 'Pending'
         else:
             transaction.status = 'Renew'
