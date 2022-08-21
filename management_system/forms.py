@@ -3,7 +3,9 @@ from pyexpat import model
 from secrets import choice
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
-from management_system.models import Client, Item, Transaction
+from management_system.models import Client, Item, Transaction, Category
+
+
 
 
 class TransactionForm(forms.ModelForm):
