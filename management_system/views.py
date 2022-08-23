@@ -123,7 +123,8 @@ class DashboardView(LoginRequiredMixin, View):
         new = Transaction.objects.filter(status='New').count()
         pending = Transaction.objects.filter(status='Pending').count()
         renew = Transaction.objects.filter(status='Renew').count()
-        to_pending = pending_check(Transaction)
+        pending_check(Transaction)
+        transaction = five_days_due_date(Transaction)
 
         context = {
             'clients': clients,
@@ -131,6 +132,7 @@ class DashboardView(LoginRequiredMixin, View):
             'new': new,
             'pending': pending,
             'total_renew': renew,
+            'count_notification': len(transaction)
         }
 
         return render(request, 'index.html', context)
@@ -146,6 +148,14 @@ class ClientListView(LoginRequiredMixin, ListView):
     context_object_name = 'clients'
     ordering = ['-created']
 
+    def get_context_data(self, **kwargs):
+        context = super(ClientListView, self).get_context_data(**kwargs)
+        transactions = five_days_due_date(Transaction)
+        context['count_notification'] = len(transactions)
+
+        return context
+ 
+
 
 client_list_view = ClientListView.as_view()
 
@@ -160,6 +170,8 @@ class ItemListView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super(ItemListView, self).get_context_data(**kwargs)
         category = Category.objects.all()
+        transactions = five_days_due_date(Transaction)
+        context['count_notification'] = len(transactions)
         context['category'] = category
 
         return context
@@ -175,6 +187,13 @@ class TransactionListView(LoginRequiredMixin, ListView):
     context_object_name = 'transactions'
     ordering = ['-created']
 
+    def get_context_data(self, **kwargs):
+        context = super(TransactionListView, self).get_context_data(**kwargs)
+        transactions = five_days_due_date(Transaction)
+        context['count_notification'] = len(transactions)
+
+        return context
+
 
 transaction_list_view = TransactionListView.as_view()
 
@@ -187,6 +206,13 @@ class TransactionListPendingView(LoginRequiredMixin, ListView):
     context_object_name = 'transactions'
     ordering = ['-created']
 
+    def get_context_data(self, **kwargs):
+        context = super(TransactionListPendingView, self).get_context_data(**kwargs)
+        transactions = five_days_due_date(Transaction)
+        context['count_notification'] = len(transactions)
+
+        return context
+
 
 transaction_list_pending_view = TransactionListPendingView.as_view()
 
@@ -198,6 +224,13 @@ class TransactionListPaidView(LoginRequiredMixin, ListView):
     paginate_by = 10
     context_object_name = 'transactions'
     ordering = ['-created']
+
+    def get_context_data(self, **kwargs):
+        context = super(TransactionListPaidView, self).get_context_data(**kwargs)
+        transactions = five_days_due_date(Transaction)
+        context['count_notification'] = len(transactions)
+
+        return context    
 
 
 transaction_list_paid_view = TransactionListPaidView.as_view()
@@ -212,6 +245,14 @@ class TransactionListRenewView(LoginRequiredMixin, ListView):
     ordering = ['-created']
 
 
+    def get_context_data(self, **kwargs):
+        context = super(TransactionListRenewView, self).get_context_data(**kwargs)
+        transactions = five_days_due_date(Transaction)
+        context['count_notification'] = len(transactions)
+
+        return context
+
+
 transaction_list_renew_view = TransactionListRenewView.as_view()
 
 
@@ -222,6 +263,13 @@ class TransactionListNewView(LoginRequiredMixin, ListView):
     paginate_by = 10
     context_object_name = 'transactions'
     ordering = ['-created']
+
+    def get_context_data(self, **kwargs):
+        context = super(TransactionListNewView, self).get_context_data(**kwargs)
+        transactions = five_days_due_date(Transaction)
+        context['count_notification'] = len(transactions)
+
+        return context
 
 
 transaction_list_new_view = TransactionListNewView.as_view()
@@ -410,18 +458,20 @@ class PaidTransactionView(View):
 paid_transaction_view = PaidTransactionView.as_view()
 
 
-class FiveDaysBeforeDueDate(LoginRequiredMixin, View):
-    template_name = 'components/five_days_due_date.html'
+class FiveDaysBeforeDueDate(LoginRequiredMixin, ListView):
+    template_name = 'five_days_before_due_date.html'
 
-    def get(self, request):
-        transactions = five_days_due_date(Transaction)
+    transactions = five_days_due_date(Transaction)
+    queryset = transactions
+    paginate_by = 10
+    context_object_name = 'transactions'
+    ordering = ['-created']
 
-        context = {
-            'transactions': transactions,
-            'count_notification': len(transactions)
-        }
+    def get_context_data(self, **kwargs):
+        context = super(FiveDaysBeforeDueDate, self).get_context_data(**kwargs)
+        context['count_notification'] = len(self.transactions)
 
-        return render(request, self.template_name, context)
+        return context
 
 
 five_days_before_due_date = FiveDaysBeforeDueDate.as_view()

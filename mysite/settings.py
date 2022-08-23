@@ -67,26 +67,37 @@ TEMPLATES = [
 WSGI_APPLICATION = 'mysite.wsgi.application'
 
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.mysql', 
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     },
+#     'new':{
+#         'ENGINE': 'django.db.backends.mysql',
 #         'NAME': 'pagasa',
+#         'HOST':'localhost',
+#         'PORT': '3306',
 #         'USER': 'root',
 #         'PASSWORD': '',
-#         'HOST': '127.0.0.1',   # Or an IP Address that your DB is hosted on
-#         'PORT': '3306',
-#         'OPTIONS': {
-#             'init_comman': "SET sql_mode='STRICT_TRANS_TABLES'"
+#         'OPTION': {
+#             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
 #         }
 #     }
 # }
+
+DATABASES = {
+    'default': {
+       'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'pagasa',
+        'HOST':'localhost',
+        'PORT': '3306',
+        'USER': 'root',
+        'PASSWORD': '',
+        'OPTION': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+        }    
+    }
+}
 
 
 AUTH_PASSWORD_VALIDATORS = [
