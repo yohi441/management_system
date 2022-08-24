@@ -466,6 +466,7 @@ class FiveDaysBeforeDueDate(LoginRequiredMixin, ListView):
     paginate_by = 10
     context_object_name = 'transactions'
     ordering = ['-created']
+    print(queryset)
 
     def get_context_data(self, **kwargs):
         context = super(FiveDaysBeforeDueDate, self).get_context_data(**kwargs)
