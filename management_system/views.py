@@ -11,24 +11,24 @@ from django.db.models import Q
 import datetime
 
 
-
 def five_days_due_date(model):
-        transactions = model.objects.filter(
-            Q(status='Renew') | Q(status='New'))
+    transactions = model.objects.filter(
+        Q(status='Renew') | Q(status='New'))
 
-        e_list = []
+    e_list = []
 
-        for transaction in transactions:
-            expiration = transaction.due_date
-            date_now = datetime.datetime.now().date()
-            days = (expiration) - date_now
+    for transaction in transactions:
+        expiration = transaction.due_date
+        date_now = datetime.datetime.now().date()
+        days = (expiration) - date_now
 
-            if days.days <= 5 and days.days >= 0:
-                e_list.append(transaction.id)
+        if days.days <= 5 and days.days >= 0:
+            e_list.append(transaction.id)
 
-        five_days_before_expire = model.objects.filter(pk__in=e_list)
+    five_days_before_expire = model.objects.filter(pk__in=e_list)
 
-        return five_days_before_expire
+    return five_days_before_expire
+
 
 def pending_check(model):
     t = model.objects.filter(Q(status='Renew') | Q(status='New'))
@@ -154,7 +154,6 @@ class ClientListView(LoginRequiredMixin, ListView):
         context['count_notification'] = len(transactions)
 
         return context
- 
 
 
 client_list_view = ClientListView.as_view()
@@ -207,7 +206,8 @@ class TransactionListPendingView(LoginRequiredMixin, ListView):
     ordering = ['-created']
 
     def get_context_data(self, **kwargs):
-        context = super(TransactionListPendingView, self).get_context_data(**kwargs)
+        context = super(TransactionListPendingView,
+                        self).get_context_data(**kwargs)
         transactions = five_days_due_date(Transaction)
         context['count_notification'] = len(transactions)
 
@@ -226,11 +226,12 @@ class TransactionListPaidView(LoginRequiredMixin, ListView):
     ordering = ['-created']
 
     def get_context_data(self, **kwargs):
-        context = super(TransactionListPaidView, self).get_context_data(**kwargs)
+        context = super(TransactionListPaidView,
+                        self).get_context_data(**kwargs)
         transactions = five_days_due_date(Transaction)
         context['count_notification'] = len(transactions)
 
-        return context    
+        return context
 
 
 transaction_list_paid_view = TransactionListPaidView.as_view()
@@ -244,9 +245,9 @@ class TransactionListRenewView(LoginRequiredMixin, ListView):
     context_object_name = 'transactions'
     ordering = ['-created']
 
-
     def get_context_data(self, **kwargs):
-        context = super(TransactionListRenewView, self).get_context_data(**kwargs)
+        context = super(TransactionListRenewView,
+                        self).get_context_data(**kwargs)
         transactions = five_days_due_date(Transaction)
         context['count_notification'] = len(transactions)
 
@@ -265,7 +266,8 @@ class TransactionListNewView(LoginRequiredMixin, ListView):
     ordering = ['-created']
 
     def get_context_data(self, **kwargs):
-        context = super(TransactionListNewView, self).get_context_data(**kwargs)
+        context = super(TransactionListNewView,
+                        self).get_context_data(**kwargs)
         transactions = five_days_due_date(Transaction)
         context['count_notification'] = len(transactions)
 
@@ -512,7 +514,6 @@ class FiveDaysBeforeDueDate(LoginRequiredMixin, ListView):
     paginate_by = 10
     context_object_name = 'transactions'
     ordering = ['-created']
-    
 
     def get_context_data(self, **kwargs):
         context = super(FiveDaysBeforeDueDate, self).get_context_data(**kwargs)
@@ -530,7 +531,13 @@ class CategoryListView(LoginRequiredMixin, ListView):
     paginate_by = 10
     model = Item
     ordering = ['-created']
-    
+
+    def get_context_data(self, **kwargs):
+        context = super(CategoryListView, self).get_context_data(**kwargs)
+        context['category'] = Category.objects.get(pk=self.kwargs['pk'])
+
+        return context
+
     def get_queryset(self):
         return super(CategoryListView, self).get_queryset().filter(category=self.kwargs['pk'])
 
