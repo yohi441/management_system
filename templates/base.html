@@ -223,20 +223,8 @@
                   class="rounded-md focus:outline-none focus:shadow-outline-purple"
                   @click="toggleTheme"
                   aria-label="Toggle color mode"
-                >
-                  <template x-if="!dark">
-                    <svg
-                      class="w-5 h-5 text-blue-600"
-                      aria-hidden="true"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"
-                      ></path>
-                    </svg>
-                  </template>
-                  <template x-if="dark">
+                >               
+                  
                     <svg
                       class="w-5 h-5 text-gray-400"
                       aria-hidden="true"
@@ -249,7 +237,7 @@
                         clip-rule="evenodd"
                       ></path>
                     </svg>
-                  </template>
+                  
                 </button>
               </li>
               <!-- Notifications menu -->
@@ -288,7 +276,7 @@
                     x-transition:leave-end="opacity-0"
                     @click.away="closeNotificationsMenu"
                     @keydown.escape="closeNotificationsMenu"
-                    class="absolute right-0 w-56 p-2 mt-2 space-y-2 text-gray-600 bg-white border border-gray-100 rounded-md shadow-md dark:text-gray-300 dark:border-gray-700 dark:bg-gray-700"
+                    class="absolute right-0 w-72 p-2 mt-2 space-y-2 text-gray-600 bg-white border border-gray-100 rounded-md shadow-md dark:text-gray-300 dark:border-gray-700 dark:bg-gray-700"
                     aria-label="submenu"
                   >
                     <li  
@@ -297,7 +285,7 @@
                     <a href="{% url 'five-days-due' %}" hx-boost="true" hx-indicator="#my-indicator">
                       <div
                         id="notification"
-                        class="inline-flex items-center justify-between w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
+                        class="inline-flex gap-1 items-center justify-between w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
                         
                       >
                         {% if count_notification > 0 %}

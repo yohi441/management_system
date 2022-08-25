@@ -25,7 +25,6 @@ class TransactionForm(forms.ModelForm):
         self.fields['client'].queryset = Client.objects.filter(status='active')
         
         for field in self.fields:
-            print(field)
             self.fields[str(field)].widget.attrs.update({
                 'class': 'rounded-md mb-2 block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-blue-400 focus:outline-none focus:ring-0 focus:shadow-outline-blue dark:text-gray-300 dark:focus:shadow-outline-gray form-input',
                 'placeholder': str(field).replace('_', ' ').capitalize(),

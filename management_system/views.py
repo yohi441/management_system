@@ -279,19 +279,33 @@ class ItemFormView(LoginRequiredMixin, View):
 
     def get(self, request):
         form = ItemForm()
+        transactions = five_days_due_date(Transaction)
+        context = {
+            'form': form,
+            'count_notification': len(transactions)
+        }
 
-        return render(request, 'components/item_form.html', {'form': form})
+        return render(request, 'components/item_form.html', context)
 
     def post(self, request):
         form = ItemForm(request.POST)
+        transactions = five_days_due_date(Transaction)
+        context = {
+            'form': form,
+            'count_notification': len(transactions)
+        }
 
         if form.is_valid():
             form.save()
             form = ItemForm()
+            context = {
+                'form': form,
+                'count_notification': len(transactions)
+            }
             messages.success(request, "Item Add Successfully")
-            return render(request, 'components/item_form.html', {'form': form})
+            return render(request, 'components/item_form.html', context)
 
-        return render(request, 'components/item_form.html', {'form': form})
+        return render(request, 'components/item_form.html', context)
 
 
 item_form_view = ItemFormView.as_view()
@@ -301,19 +315,33 @@ class ClientFormView(LoginRequiredMixin, View):
 
     def get(self, request):
         form = ClientForm()
+        transactions = five_days_due_date(Transaction)
+        context = {
+            'form': form,
+            'count_notification': len(transactions)
+        }
 
-        return render(request, 'components/client_form.html', {'form': form})
+        return render(request, 'components/client_form.html', context)
 
     def post(self, request):
         form = ClientForm(request.POST)
+        transactions = five_days_due_date(Transaction)
+        context = {
+            'form': form,
+            'count_notification': len(transactions)
+        }
 
         if form.is_valid():
             form.save()
             form = ClientForm()
+            context = {
+                'form': form,
+                'count_notification': len(transactions)
+            }
             messages.success(request, "Client Add Successfully")
-            return render(request, 'components/client_form.html', {'form': form})
+            return render(request, 'components/client_form.html', context)
 
-        return render(request, 'components/client_form.html', {'form': form})
+        return render(request, 'components/client_form.html', context)
 
 
 client_form_view = ClientFormView.as_view()
@@ -323,19 +351,34 @@ class TransactionFormView(LoginRequiredMixin, View):
 
     def get(self, request):
         form = TransactionForm()
+        transactions = five_days_due_date(Transaction)
+        context = {
+            'form': form,
+            'count_notification': len(transactions)
+        }
 
-        return render(request, 'components/transaction_form.html', {'form': form})
+        return render(request, 'components/transaction_form.html', context)
 
     def post(self, request):
         form = TransactionForm(request.POST)
+        transactions = five_days_due_date(Transaction)
+
+        context = {
+            'form': form,
+            'count_notification': len(transactions)
+        }
 
         if form.is_valid():
             form.save()
             form = TransactionForm()
+            context = {
+                'form': form,
+                'count_notification': len(transactions)
+            }
             messages.success(request, "Transaction Add Successfully")
-            return render(request, 'components/transaction_form.html', {'form': form})
+            return render(request, 'components/transaction_form.html', context)
 
-        return render(request, 'components/transaction_form.html', {'form': form})
+        return render(request, 'components/transaction_form.html', context)
 
 
 transaction_form_view = TransactionFormView.as_view()
@@ -411,8 +454,11 @@ class SearchResultsView(LoginRequiredMixin, View):
             Q(middle_name__icontains=q)
         )[:10]
 
+        transactions = five_days_due_date(Transaction)
+
         context = {
             'clients': clients,
+            'count_notification': len(transactions)
         }
 
         return render(request, 'components/search_results.html', context)
@@ -466,7 +512,7 @@ class FiveDaysBeforeDueDate(LoginRequiredMixin, ListView):
     paginate_by = 10
     context_object_name = 'transactions'
     ordering = ['-created']
-    print(queryset)
+    
 
     def get_context_data(self, **kwargs):
         context = super(FiveDaysBeforeDueDate, self).get_context_data(**kwargs)
