@@ -87,18 +87,13 @@ id="print-this"  class="min-w-0 p-4 mt-6 space-y-2 bg-white rounded-lg shadow-xs
       <button
           x-data
           @click="print()" 
-          class="flex items-center justify-between px-4 py-2 mt-6 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-green-600 border border-transparent rounded-lg active:bg-green-600 hover:bg-green-700 focus:outline-none focus:shadow-outline-green"
+          class="flex items-center justify-between px-4 py-2 mt-6 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-orange-500 border border-transparent rounded-lg active:bg-orange-600 hover:bg-orange-700 focus:outline-none focus:shadow-outline-green"
         >
-          <svg
-            fill="currentColor"
-            class="w-4 h-4 mr-2 -ml-1"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 20 20"
-          >
-            <path
-              d="M12.3 3.7l4 4L4 20H0v-4L12.3 3.7zm1.4-1.4L16 0l4 4-2.3 2.3-4-4z"
-            />
-          </svg>
+        <svg 
+        fill="currentColor"
+        class="w-4 h-4 mr-2 -ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+          <path d="M4 16H0V6h20v10h-4v4H4v-4zm2-4v6h8v-6H6zM4 0h12v5H4V0zM2 8v2h2V8H2zm4 0v2h2V8H6z"/>
+      </svg>
           <span>Print</span>
         </button>
     </div>
