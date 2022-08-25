@@ -524,3 +524,15 @@ class FiveDaysBeforeDueDate(LoginRequiredMixin, ListView):
 five_days_before_due_date = FiveDaysBeforeDueDate.as_view()
 
 
+class CategoryListView(LoginRequiredMixin, ListView):
+    template_name = "partials/category_partial.html"
+    context_object_name = "items"
+    paginate_by = 10
+    model = Item
+    ordering = ['-created']
+    
+    def get_queryset(self):
+        return super(CategoryListView, self).get_queryset().filter(category=self.kwargs['pk'])
+
+
+category_list_view = CategoryListView.as_view()

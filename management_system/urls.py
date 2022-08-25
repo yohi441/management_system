@@ -38,6 +38,7 @@ urlpatterns = [
 
 
     path('transaction/five/days/due/', views.five_days_before_due_date, name="five-days-due"),
+    path('items/category/<int:pk>/', views.category_list_view, name="item_category")
     
 ]
 

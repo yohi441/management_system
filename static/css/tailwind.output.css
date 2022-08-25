@@ -1543,6 +1543,10 @@ select {
   fill: #2563eb;
 }
 
+.fill-slate-800 {
+  fill: #1e293b;
+}
+
 .object-cover {
   -o-object-fit: cover;
      object-fit: cover;
