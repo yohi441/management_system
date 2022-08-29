@@ -1,4 +1,5 @@
 
+from pyexpat import model
 from django.db import models
 import datetime
 
@@ -96,4 +97,11 @@ class Transaction(models.Model):
 
     def __str__(self) -> str:
         return f"Date Pawned: {self.date_pawned}--Client: {self.client}-- Item: {self.item}"
+
+
+class Forfeit(models.Model):
+    item = models.ForeignKey(Item, related_name="forfeits", on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.item}"
     

@@ -29,6 +29,7 @@ urlpatterns = [
     
     path('transaction/renew/<int:pk>', views.renew_transaction_view, name="transaction_renew"),
     path('transaction/paid/<int:pk>', views.paid_transaction_view, name="transaction_paid"),
+    path('transaction/forfeit/<int:pk>', views.forfeit_item, name="transaction_forfeit"),
     
     
     path('transaction/pending/list/', views.transaction_list_pending_view, name="transaction_pending_list"),

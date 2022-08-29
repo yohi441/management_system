@@ -81,6 +81,25 @@ id="print-this"  class="min-w-0 p-4 mt-6 space-y-2 bg-white rounded-lg shadow-xs
           <span>Paid</span>
         </button>
       </a>
+      {% if object.status == 'Pending'%}
+      <a hx-confirm="Are you sure? You cannot undone this action" href="{% url 'transaction_forfeit' object.pk %}" hx-boost="true" hx-indicator="#my-indicator">
+        <button 
+          class="flex items-center justify-between px-4 py-2 mt-6 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-red-600 border border-transparent rounded-lg active:bg-red-600 hover:bg-red-700 focus:outline-none focus:shadow-outline-red"
+        >
+          <svg
+            fill="currentColor"
+            class="w-4 h-4 mr-2 -ml-1"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+          >
+            <path
+              d="M12.3 3.7l4 4L4 20H0v-4L12.3 3.7zm1.4-1.4L16 0l4 4-2.3 2.3-4-4z"
+            />
+          </svg>
+          <span>Forfiet</span>
+        </button>
+      </a>
+      {%endif%}
     </div>
     {% endif %}
     <div id="hidden-print">

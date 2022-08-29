@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render
 from django.urls import reverse
-from management_system.models import Client, Item, Transaction, Category
+from management_system.models import Client, Item, Transaction, Category, Forfeit
 from django.contrib.auth import logout
 from django.contrib.auth import login
 from management_system.forms import LoginForm, ClientForm, ItemForm, TransactionForm
@@ -497,7 +497,10 @@ class PaidTransactionView(View):
 
     def get(self, request, pk):
         transaction = Transaction.objects.get(pk=pk)
-
+        item_pk = transaction.item.id
+        item = Item.objects.get(pk=item_pk)
+        item.status = 'I'
+        item.save()
         transaction.status = 'Paid'
         transaction.save()
 
@@ -505,6 +508,24 @@ class PaidTransactionView(View):
 
 
 paid_transaction_view = PaidTransactionView.as_view()
+
+
+class ForfeitItem(View):
+    def get(self, request, pk):
+        transaction = Transaction.objects.get(pk=pk)
+        item_pk = transaction.item.id
+        item = Item.objects.get(pk=item_pk)
+        item.status = 'I'
+        transaction.status = 'Forfeit'
+    
+        transaction.save()
+        item.save()
+        obj = Forfeit.objects.create(item=item)
+
+        return redirect(reverse('transaction_detail', kwargs={'pk': pk}))
+
+forfeit_item = ForfeitItem.as_view()
+
 
 
 class FiveDaysBeforeDueDate(LoginRequiredMixin, ListView):
