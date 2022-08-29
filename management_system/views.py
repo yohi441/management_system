@@ -153,6 +153,7 @@ class ClientListView(LoginRequiredMixin, ListView):
         transactions = five_days_due_date(Transaction)
         context['count_notification'] = len(transactions)
 
+
         return context
 
 
