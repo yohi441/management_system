@@ -521,6 +521,7 @@ class ForfeitItem(View):
         transaction.save()
         item.save()
         obj = Forfeit.objects.create(item=item)
+        obj.save()
 
         return redirect(reverse('transaction_detail', kwargs={'pk': pk}))
 
@@ -565,3 +566,22 @@ class CategoryListView(LoginRequiredMixin, ListView):
 
 
 category_list_view = CategoryListView.as_view()
+
+
+class ForfeitItemsView(LoginRequiredMixin, ListView):
+    template_name = "forfeit_item_list_full.html"
+    context_object_name = "items"
+    paginate_by = 10
+    model = Forfeit
+    ordering = ['item']
+    transactions = five_days_due_date(Transaction)
+
+    def get_context_data(self, **kwargs):
+        context = super(ForfeitItemsView, self).get_context_data(**kwargs)
+        context['count_notification'] = len(self.transactions)
+
+        return context
+
+forfeit_items_view = ForfeitItemsView.as_view()
+
+    

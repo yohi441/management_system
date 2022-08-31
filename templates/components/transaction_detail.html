@@ -44,7 +44,7 @@ id="print-this"  class="min-w-0 p-4 mt-6 space-y-2 bg-white rounded-lg shadow-xs
   </p>
 
 
-  {% if object.status != 'Paid'%}
+  {% if object.status != 'Paid' and object.status != 'Forfeit' %}
   <div class="flex items-center justify-between">
     <div id="hide-this" class="flex space-x-2">
       <a hx-confirm="Are you sure you want to renew?" href="{% url 'transaction_renew' object.pk %}" hx-boost="true" hx-indicator="#my-indicator">

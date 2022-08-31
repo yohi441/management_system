@@ -3,7 +3,7 @@
 
 <div id="content" class="mt-6">
   <h4 id="item-title" class="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300">
-    List Of All Items
+    Forfeited Items
   </h4>
   <div class="mb-6 flex justify-between">
     <a href="{% url 'item_form' %}" hx-boost="true" hx-indicator="#my-indicator">
@@ -14,42 +14,7 @@
       </button>
     </a>
     
-    <div class="flex gap-2 items-center">
-        <a href="{% url 'forfeit_items' %}" hx-boost="true" hx-indicator="#my-indicator">
-        <button
-          class="px-5 mb-4 py-3 font-medium leading-5 text-white transition-colors duration-150 bg-red-600 border border-transparent rounded-lg active:bg-red-600 hover:bg-red-700 focus:outline-none focus:shadow-outline-red"
-        >
-          List Forfeited Items
-        </button>
-      </a>
-      <div x-data="{open:false}" class="relative">
-        
-        <button
-        @click="open=!open"
-        class="px-5 flex gap-1 items-center mb-4 py-3 font-medium leading-5 text-white transition-colors duration-150 bg-teal-600 border border-transparent rounded-lg active:bg-teal-600 hover:bg-teal-700 focus:outline-none focus:shadow-outline-teal"
-        >
-        <span>Category List</span>
-        <svg
-        class="w-8 h-8 fill-slate-800"
-        xmlns="http://www.w3.org/2000/svg" 
-        viewBox="0 0 20 20">
-        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
-        </svg>
-      </button>
-      <div x-show="open" x-cloak @click.away="open=false" class="absolute right-0 w-48 bg-white h-54 overflow-auto space-y-3 border dark:border-gray-400 border-gray-600">
-        {% for c in category %}
-        <div class="p-2 hover:bg-gray-300 flex justify-center items-center">
-        <p hx-get="{% url 'item_category' c.pk %}"
-          hx-swap="outerHTML"
-          hx-target="#item-list"
-          hx-trigger="click"
-          @click="open=false"
-          class="cursor-pointer text-gray-600 dark:text-gray-700">{{c.name|title}}</p>
-        </div>
-        {% endfor %}
-      </div>
-      </div>
-    </div>
+    
     
     
     
@@ -74,18 +39,15 @@
               <div class="flex items-center text-sm">
                 <div>
                   <a href="{% url 'item_detail' item.pk %}" hx-boost="true" hx-indicator="#my-indicator">
-                    <p class="font-semibold">{{item.item|title}}</p>
+                    <p class="font-semibold">{{item.item.item|title}}</p>
                   </a>
-                  <p class="text-xs text-gray-600 dark:text-gray-400">
-                    {{item.client|title}}
-                  </p>
                 </div>
               </div>
             </td>
-            <td class="px-4 py-3 text-sm">{{item.serial_number|unlocalize}}</td>
-            <td class="px-4 py-3 text-sm">P {{item.appraise_value}}</td>
+            <td class="px-4 py-3 text-sm">{{item.item.serial_number|unlocalize}}</td>
+            <td class="px-4 py-3 text-sm">P {{item.item.appraise_value}}</td>
             
-            <td class="px-4 py-3 text-sm">{{item.created}}</td>
+            <td class="px-4 py-3 text-sm">{{item.item.created}}</td>
            
           </tr>
           {% endfor %}
