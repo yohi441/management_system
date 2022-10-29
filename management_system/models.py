@@ -82,7 +82,7 @@ class Transaction(models.Model):
         due_date = self.date_pawned + month
         return due_date
 
-
+    @property
     def total(self):
         interest_rate = float(self.interest_rate) / 100
         interest = float(self.item.appraise_value) * interest_rate

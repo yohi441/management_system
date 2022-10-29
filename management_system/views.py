@@ -1,3 +1,4 @@
+from multiprocessing import context
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from management_system.models import Client, Item, Transaction, Category, Forfeit
@@ -9,7 +10,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.db.models import Q
 import datetime
+from django.core.paginator import Paginator
 
+
+def category_list(category_model):
+    categories = category_model.objects.all()
+    return categories
 
 def five_days_due_date(model):
     transactions = model.objects.filter(
@@ -53,6 +59,7 @@ class ClientDetailView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super(ClientDetailView, self).get_context_data(**kwargs)
         context['count_notification'] = len(self.transactions)
+        context['categories'] = category_list(Category)
 
         return context
 
@@ -64,6 +71,13 @@ class ItemDetailView(LoginRequiredMixin, DetailView):
     template_name = 'components/item_detail.html'
     model = Item
 
+    def get_context_data(self, **kwargs):
+        context = super(TransactionDetailView, self).get_context_data(**kwargs)
+        transactions = five_days_due_date(Transaction)
+        context['count_notification'] = len(transactions)
+        context['categories'] = category_list(Category)
+
+
 
 item_detail_view = ItemDetailView.as_view()
 
@@ -71,6 +85,12 @@ item_detail_view = ItemDetailView.as_view()
 class TransactionDetailView(LoginRequiredMixin, DetailView):
     template_name = 'components/transaction_detail.html'
     model = Transaction
+
+    def get_context_data(self, **kwargs):
+        context = super(TransactionDetailView, self).get_context_data(**kwargs)
+        transactions = five_days_due_date(Transaction)
+        context['count_notification'] = len(transactions)
+        context['categories'] = category_list(Category)
 
 
 transaction_detail_view = TransactionDetailView.as_view()
@@ -125,6 +145,7 @@ class DashboardView(LoginRequiredMixin, View):
         renew = Transaction.objects.filter(status='Renew').count()
         pending_check(Transaction)
         transaction = five_days_due_date(Transaction)
+        categories = category_list(Category)
 
         context = {
             'clients': clients,
@@ -132,7 +153,8 @@ class DashboardView(LoginRequiredMixin, View):
             'new': new,
             'pending': pending,
             'total_renew': renew,
-            'count_notification': len(transaction)
+            'count_notification': len(transaction),
+            'categories': categories
         }
 
         return render(request, 'index.html', context)
@@ -152,6 +174,7 @@ class ClientListView(LoginRequiredMixin, ListView):
         context = super(ClientListView, self).get_context_data(**kwargs)
         transactions = five_days_due_date(Transaction)
         context['count_notification'] = len(transactions)
+        context['categories'] = category_list(Category)
 
 
         return context
@@ -169,10 +192,9 @@ class ItemListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super(ItemListView, self).get_context_data(**kwargs)
-        category = Category.objects.all()
         transactions = five_days_due_date(Transaction)
         context['count_notification'] = len(transactions)
-        context['category'] = category
+        context['categories'] = category_list(Category)
 
         return context
 
@@ -191,6 +213,7 @@ class TransactionListView(LoginRequiredMixin, ListView):
         context = super(TransactionListView, self).get_context_data(**kwargs)
         transactions = five_days_due_date(Transaction)
         context['count_notification'] = len(transactions)
+        context['categories'] = category_list(Category)
 
         return context
 
@@ -211,6 +234,7 @@ class TransactionListPendingView(LoginRequiredMixin, ListView):
                         self).get_context_data(**kwargs)
         transactions = five_days_due_date(Transaction)
         context['count_notification'] = len(transactions)
+        context['categories'] = category_list(Category)
 
         return context
 
@@ -231,6 +255,7 @@ class TransactionListPaidView(LoginRequiredMixin, ListView):
                         self).get_context_data(**kwargs)
         transactions = five_days_due_date(Transaction)
         context['count_notification'] = len(transactions)
+        context['categories'] = category_list(Category)
 
         return context
 
@@ -251,6 +276,7 @@ class TransactionListRenewView(LoginRequiredMixin, ListView):
                         self).get_context_data(**kwargs)
         transactions = five_days_due_date(Transaction)
         context['count_notification'] = len(transactions)
+        context['categories'] = category_list(Category)
 
         return context
 
@@ -271,6 +297,7 @@ class TransactionListNewView(LoginRequiredMixin, ListView):
                         self).get_context_data(**kwargs)
         transactions = five_days_due_date(Transaction)
         context['count_notification'] = len(transactions)
+        context['categories'] = category_list(Category)
 
         return context
 
@@ -285,7 +312,8 @@ class ItemFormView(LoginRequiredMixin, View):
         transactions = five_days_due_date(Transaction)
         context = {
             'form': form,
-            'count_notification': len(transactions)
+            'count_notification': len(transactions),
+            'categories': category_list(Category)
         }
 
         return render(request, 'components/item_form.html', context)
@@ -295,7 +323,8 @@ class ItemFormView(LoginRequiredMixin, View):
         transactions = five_days_due_date(Transaction)
         context = {
             'form': form,
-            'count_notification': len(transactions)
+            'count_notification': len(transactions),
+            'categories': category_list(Category)
         }
 
         if form.is_valid():
@@ -303,7 +332,8 @@ class ItemFormView(LoginRequiredMixin, View):
             form = ItemForm()
             context = {
                 'form': form,
-                'count_notification': len(transactions)
+                'count_notification': len(transactions),
+                'categories': category_list(Category)
             }
             messages.success(request, "Item Add Successfully")
             return render(request, 'components/item_form.html', context)
@@ -321,7 +351,8 @@ class ClientFormView(LoginRequiredMixin, View):
         transactions = five_days_due_date(Transaction)
         context = {
             'form': form,
-            'count_notification': len(transactions)
+            'count_notification': len(transactions),
+            'categories': category_list(Category)
         }
 
         return render(request, 'components/client_form.html', context)
@@ -331,7 +362,8 @@ class ClientFormView(LoginRequiredMixin, View):
         transactions = five_days_due_date(Transaction)
         context = {
             'form': form,
-            'count_notification': len(transactions)
+            'count_notification': len(transactions),
+            'categories': category_list(Category)
         }
 
         if form.is_valid():
@@ -339,7 +371,8 @@ class ClientFormView(LoginRequiredMixin, View):
             form = ClientForm()
             context = {
                 'form': form,
-                'count_notification': len(transactions)
+                'count_notification': len(transactions),
+                'categories': category_list(Category)
             }
             messages.success(request, "Client Add Successfully")
             return render(request, 'components/client_form.html', context)
@@ -357,7 +390,8 @@ class TransactionFormView(LoginRequiredMixin, View):
         transactions = five_days_due_date(Transaction)
         context = {
             'form': form,
-            'count_notification': len(transactions)
+            'count_notification': len(transactions),
+            'categories': category_list(Category)
         }
 
         return render(request, 'components/transaction_form.html', context)
@@ -368,7 +402,8 @@ class TransactionFormView(LoginRequiredMixin, View):
 
         context = {
             'form': form,
-            'count_notification': len(transactions)
+            'count_notification': len(transactions),
+            'categories': category_list(Category)
         }
 
         if form.is_valid():
@@ -376,7 +411,8 @@ class TransactionFormView(LoginRequiredMixin, View):
             form = TransactionForm()
             context = {
                 'form': form,
-                'count_notification': len(transactions)
+                'count_notification': len(transactions),
+                'categories': category_list(Category)
             }
             messages.success(request, "Transaction Add Successfully")
             return render(request, 'components/transaction_form.html', context)
@@ -392,7 +428,12 @@ class ClientUpdateView(LoginRequiredMixin, View):
     def get(self, request, pk):
         client = Client.objects.get(pk=pk)
         form = ClientForm(instance=client)
-        return render(request, 'components/client_update.html', {'form': form, 'client': client})
+        context = {
+            'form': form, 
+            'client': client,
+            'categories': category_list(Category)
+            }
+        return render(request, 'components/client_update.html', context)
 
     def post(self, request, pk):
         client = Client.objects.get(pk=pk)
@@ -401,7 +442,12 @@ class ClientUpdateView(LoginRequiredMixin, View):
             form.save()
             messages.success(request, "Client Updated Successfully")
             return redirect(reverse('client_detail', kwargs={'pk': pk}))
-        return render(request, 'components/client_update.html', {'form': form, 'client': client})
+        context = {
+            'form': form,
+            'client': client,
+            'categories': category_list(Category)
+            }
+        return render(request, 'components/client_update.html', context)
 
 
 client_update_view = ClientUpdateView.as_view()
@@ -412,7 +458,12 @@ class ItemUpdateView(LoginRequiredMixin, View):
     def get(self, request, pk):
         item = Item.objects.get(pk=pk)
         form = ItemForm(instance=item)
-        return render(request, 'components/item_update.html', {'form': form, 'item': item})
+        context = {
+            'form': form, 
+            'item': item,
+            'categories': category_list(Category)
+            }
+        return render(request, 'components/item_update.html', context)
 
     def post(self, request, pk):
         item = Item.objects.get(pk=pk)
@@ -421,7 +472,12 @@ class ItemUpdateView(LoginRequiredMixin, View):
             form.save()
             messages.success(request, "Item Updated Successfully")
             return redirect(reverse('item_detail', kwargs={'pk': pk}))
-        return render(request, 'components/item_update.html', {'form': form, 'item': item})
+        context = {
+            'form': form, 
+            'item': item,
+            'categories': category_list(Category)
+            }
+        return render(request, 'components/item_update.html', context)
 
 
 item_update_view = ItemUpdateView.as_view()
@@ -432,7 +488,12 @@ class TransactionUpdateView(LoginRequiredMixin, View):
     def get(self, request, pk):
         transaction = Transaction.objects.get(pk=pk)
         form = TransactionForm(instance=transaction)
-        return render(request, 'components/transaction_update.html', {'form': form, 'transaction': transaction})
+        context = {
+            'form': form, 
+            'transaction': transaction,
+            'categories': category_list(Category)
+            }
+        return render(request, 'components/transaction_update.html', context)
 
     def post(self, request, pk):
         transaction = Transaction.objects.get(pk=pk)
@@ -441,7 +502,12 @@ class TransactionUpdateView(LoginRequiredMixin, View):
             form.save()
             messages.success(request, "Transaction Updated Successfully")
             return redirect(reverse('transaction_detail', kwargs={'pk': pk}))
-        return render(request, 'components/transaction_update.html', {'form': form, 'transaction': transaction})
+        context = {
+            'form': form, 
+            'transaction': transaction,
+            'categories': category_list(Category)
+            }
+        return render(request, 'components/transaction_update.html', context)
 
 
 transaction_update_view = TransactionUpdateView.as_view()
@@ -461,7 +527,8 @@ class SearchResultsView(LoginRequiredMixin, View):
 
         context = {
             'clients': clients,
-            'count_notification': len(transactions)
+            'count_notification': len(transactions),
+            'categories': category_list(Category)
         }
 
         return render(request, 'components/search_results.html', context)
@@ -486,8 +553,10 @@ class RenewTransactionView(View):
             transaction.status = 'Renew'
 
         transaction.save()
-
-        return redirect(reverse('transaction_detail', kwargs={'pk': pk}))
+        context = {
+            'categories': category_list(Category)
+        }
+        return redirect(reverse('transaction_detail', kwargs={'pk': pk}), context)
 
 
 renew_transaction_view = RenewTransactionView.as_view()
@@ -504,7 +573,10 @@ class PaidTransactionView(View):
         transaction.status = 'Paid'
         transaction.save()
 
-        return redirect(reverse('transaction_detail', kwargs={'pk': pk}))
+        context = {
+            'categories': category_list(Category)
+        }
+        return redirect(reverse('transaction_detail', kwargs={'pk': pk}), context)
 
 
 paid_transaction_view = PaidTransactionView.as_view()
@@ -523,7 +595,11 @@ class ForfeitItem(View):
         obj = Forfeit.objects.create(item=item)
         obj.save()
 
-        return redirect(reverse('transaction_detail', kwargs={'pk': pk}))
+        context = {
+            'categories': category_list(Category)
+        }
+
+        return redirect(reverse('transaction_detail', kwargs={'pk': pk}), context)
 
 forfeit_item = ForfeitItem.as_view()
 
@@ -541,6 +617,7 @@ class FiveDaysBeforeDueDate(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super(FiveDaysBeforeDueDate, self).get_context_data(**kwargs)
         context['count_notification'] = len(self.transactions)
+        context['categories'] = category_list(Category)
 
         return context
 
@@ -558,6 +635,7 @@ class CategoryListView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super(CategoryListView, self).get_context_data(**kwargs)
         context['category'] = Category.objects.get(pk=self.kwargs['pk'])
+        context['categories'] = category_list(Category)
 
         return context
 
@@ -579,9 +657,37 @@ class ForfeitItemsView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super(ForfeitItemsView, self).get_context_data(**kwargs)
         context['count_notification'] = len(self.transactions)
+        context['categories'] = category_list(Category)
 
         return context
 
 forfeit_items_view = ForfeitItemsView.as_view()
 
+
+class ItemCategoriesNameList(LoginRequiredMixin, ListView):
+    template_name = 'item_category_name_list.html'
+    context_object_name = 'transactions'
+    paginate_by = 10
+
+
+    def get_queryset(self, **kwargs):
+        items = Item.objects.filter(category=self.kwargs.get('pk'))
+        transaction_list = []
+        for item in items:
+            transaction_list.append(item.pk)
+        transactions = Transaction.objects.filter(item__in=transaction_list)
+        return transactions
+
+    def get_context_data(self, **kwargs):
+        transactions = five_days_due_date(Transaction)
+        category = Category.objects.get(pk=self.kwargs.get('pk'))
+        context = super(ItemCategoriesNameList, self).get_context_data(**kwargs)
+        context['count_notification'] = len(transactions)
+        context['categories'] = category_list(Category)
+        context['category'] = category
+
+        return context
+    
+
+item_categories_name_list = ItemCategoriesNameList.as_view()
     

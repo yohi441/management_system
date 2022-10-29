@@ -40,7 +40,9 @@ urlpatterns = [
 
     path('transaction/five/days/due/', views.five_days_before_due_date, name="five-days-due"),
     path('items/category/<int:pk>/', views.category_list_view, name="item_category"),
-    path('forfeit/items/', views.forfeit_items_view, name='forfeit_items')
+    path('forfeit/items/', views.forfeit_items_view, name='forfeit_items'),
+
+    path('item/category/names/<int:pk>/', views.item_categories_name_list, name='item_categories_name_list'),
     
 ]
 
