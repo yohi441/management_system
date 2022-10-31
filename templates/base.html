@@ -179,7 +179,7 @@
             </li>
             <li x-data="{isOpen:false}" @click.away="isOpen=false" class="relative flex justify-center">
               <button @click="isOpen=!isOpen" class="px-3 py-2 font-semibold text-white bg-teal-600 rounded-md hover:opacity-80">Item Category List</button>
-              <div class="absolute h-16 px-3 py-2 overflow-hidden border border-gray-800 rounded-md top-10" x-show="isOpen">
+              <div class="absolute px-3 py-2 overflow-y-scroll border border-gray-800 rounded-md h-28 top-12" x-show="isOpen">
                 {% for category in categories %}
                 <a href="{% url 'item_categories_name_list' category.pk %}"><button class="block">{{category}}</button></a>
                 {% endfor %}

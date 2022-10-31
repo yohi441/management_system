@@ -863,6 +863,10 @@ select {
   bottom: 10rem;
 }
 
+.top-12 {
+  top: 3rem;
+}
+
 .z-20 {
   z-index: 20;
 }
@@ -1061,6 +1065,14 @@ select {
 
 .h-32 {
   height: 8rem;
+}
+
+.h-24 {
+  height: 6rem;
+}
+
+.h-28 {
+  height: 7rem;
 }
 
 .min-h-screen {
@@ -1336,6 +1348,10 @@ select {
 
 .overflow-y-auto {
   overflow-y: auto;
+}
+
+.overflow-y-scroll {
+  overflow-y: scroll;
 }
 
 .rounded-md {

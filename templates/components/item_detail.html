@@ -74,11 +74,11 @@
           <td class="px-4 py-3">
             <div class="flex items-center text-sm">
               <div>
-                <a href="{% url 'transaction_detail' object.items.pk %}" hx-boost="true" hx-indicator="#my-indicator">
+                <a href="{% url 'transaction_detail' object.pk %}" hx-boost="false" hx-indicator="#my-indicator">
                   <p class="font-semibold">Client: {{ object.items.client.first_name|title }} {{ object.items.client.last_name|title }}</p>
                 </a>
                 <p class="text-xs text-gray-600 dark:text-gray-400">
-                  Transaction Id: {{ object.items.id }}
+                  Transaction Id: {{ object.items.pk }}
                 </p>
               </div>
             </div>

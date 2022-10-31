@@ -72,11 +72,12 @@ class ItemDetailView(LoginRequiredMixin, DetailView):
     model = Item
 
     def get_context_data(self, **kwargs):
-        context = super(TransactionDetailView, self).get_context_data(**kwargs)
+        context = super(ItemDetailView, self).get_context_data(**kwargs)
         transactions = five_days_due_date(Transaction)
         context['count_notification'] = len(transactions)
         context['categories'] = category_list(Category)
 
+        return context
 
 
 item_detail_view = ItemDetailView.as_view()
@@ -91,6 +92,8 @@ class TransactionDetailView(LoginRequiredMixin, DetailView):
         transactions = five_days_due_date(Transaction)
         context['count_notification'] = len(transactions)
         context['categories'] = category_list(Category)
+
+        return context
 
 
 transaction_detail_view = TransactionDetailView.as_view()

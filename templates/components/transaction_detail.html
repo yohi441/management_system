@@ -10,7 +10,7 @@ id="print-this"  class="min-w-0 p-4 mt-6 space-y-2 bg-white rounded-lg shadow-xs
   <p class="text-gray-600 dark:text-gray-400">
     <span>Transaction Id:</span> {{object.pk}}
   </p>
-  
+    
     <p class="text-gray-600 dark:text-gray-400">
         <a href="{% url 'client_detail' object.client.pk %}" hx-boost="true" hx-indicator="#my-indicator">
         <span>Client Name:</span> {{object.client.first_name|title}} {{object.client.last_name|title}}
