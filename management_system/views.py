@@ -1,3 +1,4 @@
+from ast import Try
 from multiprocessing import context
 from django.shortcuts import redirect, render
 from django.urls import reverse
@@ -67,17 +68,30 @@ class ClientDetailView(LoginRequiredMixin, DetailView):
 client_detail_view = ClientDetailView.as_view()
 
 
-class ItemDetailView(LoginRequiredMixin, DetailView):
-    template_name = 'components/item_detail.html'
-    model = Item
+# class ItemDetailView(LoginRequiredMixin, DetailView):
+#     template_name = 'components/item_detail.html'
+#     model = Item
 
-    def get_context_data(self, **kwargs):
-        context = super(ItemDetailView, self).get_context_data(**kwargs)
-        transactions = five_days_due_date(Transaction)
-        context['count_notification'] = len(transactions)
-        context['categories'] = category_list(Category)
+#     def get_context_data(self, **kwargs):
+#         context = super(ItemDetailView, self).get_context_data(**kwargs)
+#         transactions = five_days_due_date(Transaction)
+#         context['count_notification'] = len(transactions)
+#         context['categories'] = category_list(Category)
 
-        return context
+#         return context
+class ItemDetailView(LoginRequiredMixin, View):
+
+    def get(self, request, pk):
+        template_name = 'components/item_detail.html'
+        try:
+            item = Item.objects.get(pk=pk)
+            context = {
+                'object': item,
+            }
+            return render(request, template_name, context)
+        except:
+            messages.error(request, 'The current item dont have related transaction')
+            return redirect(reverse('all_item_list'))
 
 
 item_detail_view = ItemDetailView.as_view()
